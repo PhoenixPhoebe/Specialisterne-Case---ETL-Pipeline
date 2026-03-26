@@ -1,8 +1,8 @@
-from app.extract.specialisterne import SpecAPI
-from app.extract.new_specialisterne import NewSpecAPI
-from app.extract.dmi import DMIAPI
-from app.transform.transform import SpecDataTransformer, DMIDataTransformer
-from app.load.db.CRUD import CRUD
+from extract.specialisterne import SpecAPI
+from extract.new_specialisterne import NewSpecAPI
+from extract.dmi import DMIAPI
+from transform.transform import SpecDataTransformer, DMIDataTransformer
+from load.db.CRUD import CRUD
 import json
 import time
 from datetime import datetime, timedelta
@@ -34,7 +34,7 @@ class ETLProcess:
         times_dict = self.get_start_times()
 
         # This handles the old specialisterne etl
-        self.spec_etl(from_time=times_dict["spec"])
+        #self.spec_etl(from_time=times_dict["spec"])
 
         # The rest handles the dmi etl
         stations_file = "station_ids.json"

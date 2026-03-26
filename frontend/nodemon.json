@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "ts,tsx,js,json",
+  "legacyWatch": true,
+  "exec": " ts-node src/App.tsx"
+}

@@ -1,6 +1,7 @@
 services:
   app:
-    build: .
+    build: ./app
+    container_name: VejrApp
     depends_on:
        db:
           condition: service_healthy
@@ -9,6 +10,7 @@ services:
 
   db:
     image: postgres:16
+    container_name: VejrDB
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -23,5 +25,33 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+  
+  backend:
+    build: ./REST
+    env_file:
+      - .env
+    container_name: VejrREST
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./REST/src:/rest/src
+      - ./REST/package.json:/rest/package.json
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    command: npm run dev
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: Vejrfrontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/package.json:/app/package.json
+      - ./frontend/vite.config.ts:/app/vite.config.ts
+    command: npm run dev -- --host
+    
 volumes:
   db_data:
